@@ -1,0 +1,26 @@
+@import "tailwindcss";
+@plugin "flowbite/plugin";
+@source "../node_modules/flowbite";
+
+
+@media(max-width:576px) {
+  .dark\:bg-slate-700.bg-slate-50.p-8.rounded-lg.shadow-md {
+    height: 512px;
+  }
+}
+body{
+  background-color: #f4f4f4;
+}
+
+
+/* Hide scrollbar but allow scrolling */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+.gzpBke svg{
+  display: none !important;
+}
