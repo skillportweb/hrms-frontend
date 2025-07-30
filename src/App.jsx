@@ -57,7 +57,7 @@ function App() {
             <Route path="/my-leaves" element={<UserLeaves />} />
              <Route path="/single-leave-details/:id" element={<SingleLeaveDetails />} />
               <Route path="/my-attendance" element={<MyAttendance/>} />
-              <Route path="/attendance-monthly-table" element={<AttendanceMonthlyTable/>} />
+              <Route path="/attendance-monthly-table/:userId" element={<AttendanceMonthlyTable/>} />
 
           </Route>
         </Route>

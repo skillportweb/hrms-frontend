@@ -73,6 +73,9 @@ export default function Login() {
       if (res.user?.id) {
         localStorage.setItem("userId", res.user.id);
       }
+      if (res.user?.firstname) {
+        localStorage.setItem("firstname", res.user.firstname);
+      }
 
       toast.dismiss(loadingToastId.current);
       loadingToastId.current = null;

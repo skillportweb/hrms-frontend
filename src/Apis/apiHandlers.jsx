@@ -257,7 +257,6 @@ export const AddUserAttendance = async (payload) => {
   });
 };
 
-
 export const PunchOutAttendance = async (payload) => {
   const token = localStorage.getItem("token");
 
@@ -272,7 +271,6 @@ export const PunchOutAttendance = async (payload) => {
   });
 };
 
-
 export const GetAttendance = async (userId) => {
   const token = localStorage.getItem("token");
 
@@ -286,6 +284,20 @@ export const GetAttendance = async (userId) => {
     },
   });
 };
+
+export const RequestMissPunchout = async () =>{
+   const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+
+  return await api.get(`${Endpoints.RequestMissPunchout}/${Id}`,{
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}
 
 
 

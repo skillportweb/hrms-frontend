@@ -8,11 +8,15 @@ import "react-toastify/dist/ReactToastify.css";
 
 export default function Header({ toggleSidebar }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [firstName, setFirstName] = useState("");
   const dropdownRef = useRef();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
+    const storedName = localStorage.getItem("firstname");
+    setFirstName(storedName || "User");
+
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setDropdownOpen(false);
@@ -42,10 +46,7 @@ export default function Header({ toggleSidebar }) {
     <>
       <ToastContainer position="top-right" autoClose={3000} />
 
-      <header
-        className="flex justify-between items-center px-4 py-3 bg-[#2c3e50] shadow relative"
-        role="banner"
-      >
+      <header className="flex justify-between items-center px-4 py-3 bg-[#2c3e50] shadow relative" role="banner">
         <button
           id="toggleSidebarBtn"
           onClick={toggleSidebar}
@@ -55,7 +56,10 @@ export default function Header({ toggleSidebar }) {
           <i className="fa-solid fa-bars" aria-hidden="true"></i>
         </button>
 
-        <div className="relative" ref={dropdownRef}>
+        <div className="flex items-center gap-3 relative" ref={dropdownRef}>
+         
+          <span className="text-white font-medium ">Welcome , {firstName}</span>
+
           <img
             src="src/assets/img/profile.jpg"
             alt="User Profile"
@@ -64,7 +68,7 @@ export default function Header({ toggleSidebar }) {
           />
 
           {dropdownOpen && (
-            <div className="absolute right-0 mt-3 w-40 bg-white text-black rounded-md shadow-lg z-50 shadow-gray-300 transition-all duration-300 ease-in-out transform border-1 border-white">
+            <div className="absolute right-0 mt-3 top-9 w-40 bg-white text-black rounded-md shadow-lg z-50 shadow-gray-300 transition-all duration-300 ease-in-out transform border-1 border-white">
               <Link
                 to="/userprofile"
                 className="block px-4 py-2 hover:bg-gray-100 border-b border-gray-200"
