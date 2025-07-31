@@ -21,10 +21,11 @@ export default function Sidebar({ closeSidebar }) {
     { to: '/employees', label: 'Employees', icon: 'fas fa-users' },
     { to: '/attendance', label: 'Attendance', icon: 'fas fa-calendar-check' },
     { to: '/leaves', label: 'Leaves', icon: 'fas fa-plane-departure' },
+      { to: '/holidays', label: 'Holidays', icon: 'fas fa-umbrella-beach' },
     { to: '/payroll', label: 'Payroll', icon: 'fas fa-money-check-alt' },
     { to: '/departments', label: 'Departments', icon: 'fas fa-building' },
     { to: '/recruitment', label: 'Recruitment', icon: 'fas fa-user-plus' },
-    { to: '/performance', label: 'Performance', icon: 'fas fa-chart-line' },
+    // { to: '/performance', label: 'Performance', icon: 'fas fa-chart-line' },
     { to: '/settings', label: 'Settings', icon: 'fas fa-cogs' },
   ];
 

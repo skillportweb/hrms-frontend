@@ -56,13 +56,15 @@ const AttendanceCard = ({
   const currentDate = getCurrentDate();
   const isCurrentDate = row.date === currentDate;
 
+  const bgColor = row.isWeekend
+    ? "bg-yellow-50 border-yellow-400"
+    : row.status === "Present"
+    ? "bg-green-50 border-green-400"
+    : "bg-red-50 border-red-400";
+
   return (
     <div
-      className={`border rounded-xl p-4 shadow w-full max-w-sm mx-auto ${
-        row.status === "Present"
-          ? "bg-green-50 border-green-400"
-          : "bg-red-50 border-red-400"
-      }`}
+      className={`border rounded-xl p-4 shadow w-full max-w-sm mx-auto ${bgColor}`}
     >
       <div className="text-center">
         <h4 className="text-[15px] font-semibold mb-1">{row.dayName}</h4>
@@ -75,15 +77,16 @@ const AttendanceCard = ({
         </p>
 
         <div className="mt-3">
-          {!row.punchIn ? (
+          {row.isWeekend ? (
+            <span className="text-sm font-semibold text-yellow-700">Weekend</span>
+          ) : !row.punchIn ? (
             <button
               onClick={() => handlePunchIn(row)}
               disabled={!isCurrentDate}
-              className={`px-4 py-1 rounded text-sm ${
-                isCurrentDate
-                  ? "bg-yellow-500 text-white hover:bg-yellow-600"
-                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
-              }`}
+              className={`px-4 py-1 rounded text-sm ${isCurrentDate
+                ? "bg-yellow-500 text-white hover:bg-yellow-600"
+                : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                }`}
             >
               Punch In
             </button>
@@ -97,7 +100,7 @@ const AttendanceCard = ({
               </button>
             ) : (
               <button
-                 onClick={() => onMissPunchClick(row.id)}
+                onClick={() => onMissPunchClick(row.id)}
                 className="px-4 py-1 rounded text-sm bg-red-500 text-white hover:bg-red-600"
               >
                 Apply Miss Punch Out
@@ -149,14 +152,17 @@ const AttendanceCardView = () => {
 
         const record = data.find((d) => d.date === date);
         const dateObj = new Date(year, month - 1, i + 1);
+        const dayName = dayNames[dateObj.getDay()];
+        const isWeekend = dayName === "Saturday" || dayName === "Sunday";
 
         return {
           id: `${userId}-${i + 1}`,
           date,
-          dayName: dayNames[dateObj.getDay()],
+          dayName,
           punchIn: record?.punchIn || "",
           punchOut: record?.punchOut || "",
-          status: record?.status || "Absent",
+          status: record?.status || (isWeekend ? "Present" : "Absent"),
+          isWeekend,
         };
       }).filter(Boolean);
 
@@ -223,7 +229,6 @@ const AttendanceCardView = () => {
     }
   };
 
-  
   const handleMissPunchClick = (row) => {
     setSelectedRow(row);
     setShowMissPunchModal(true);
@@ -272,3 +277,4 @@ const AttendanceCardView = () => {
 };
 
 export default AttendanceCardView;
+

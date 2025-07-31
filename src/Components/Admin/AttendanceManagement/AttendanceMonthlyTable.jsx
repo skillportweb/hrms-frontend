@@ -4,31 +4,47 @@ import { FaCheck, FaTimes, FaSpinner } from "react-icons/fa";
 import { GetAttendance } from "../../../Apis/apiHandlers";
 
 const AttendanceCard = ({ date, day, status, punchIn, punchOut }) => {
+  const isWeekend = day === "Saturday" || day === "Sunday";
   const isPresent = status === "Present";
+
+  const cardStyle = isWeekend
+    ? "bg-yellow-100 border-yellow-400"
+    : isPresent
+    ? "bg-green-50 border-green-400"
+    : "bg-red-50 border-red-400";
+
+  const icon = isWeekend ? null : isPresent ? (
+    <FaCheck className="text-green-600" />
+  ) : (
+    <FaTimes className="text-red-500" />
+  );
 
   return (
     <div
-      className={`relative rounded-xl shadow-md border p-4 w-full max-w-xs mx-auto ${
-        isPresent ? "bg-green-50 border-green-400" : "bg-red-50 border-red-400"
-      }`}
+      className={`relative rounded-xl shadow-md border p-4 w-full max-w-xs mx-auto ${cardStyle}`}
     >
-      <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full flex items-center justify-center shadow bg-white">
-        {isPresent ? (
-          <FaCheck className="text-green-600" />
-        ) : (
-          <FaTimes className="text-red-500" />
-        )}
-      </div>
+      {!isWeekend && (
+        <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full flex items-center justify-center shadow bg-white">
+          {icon}
+        </div>
+      )}
 
       <div className="pt-6 text-center">
         <p className="text-sm font-bold text-gray-800 mb-1">{date}</p>
         <p className="text-xs text-gray-600 mb-2">{day}</p>
-        <p className="text-xs text-gray-700">
-          <span className="font-medium">Punch In:</span> {punchIn || "--"}
-        </p>
-        <p className="text-xs text-gray-700">
-          <span className="font-medium">Punch Out:</span> {punchOut || "--"}
-        </p>
+
+        {isWeekend ? (
+          <p className="text-xs text-gray-700 font-medium mt-4">Weekend</p>
+        ) : (
+          <>
+            <p className="text-xs text-gray-700">
+              <span className="font-medium">Punch In:</span> {punchIn || "--"}
+            </p>
+            <p className="text-xs text-gray-700">
+              <span className="font-medium">Punch Out:</span> {punchOut || "--"}
+            </p>
+          </>
+        )}
       </div>
     </div>
   );
@@ -55,16 +71,6 @@ export default function AttendanceMonthView() {
 
       try {
         const res = await GetAttendance(parsedUserId);
-        console.log("=== FULL API RESPONSE ===", res);
-        console.log("=== API ATTENDANCE DATA ===", res.attendance);
-        
-        // Log individual items to see their structure
-        if (Array.isArray(res.attendance) && res.attendance.length > 0) {
-          console.log("=== FIRST ATTENDANCE ITEM ===", res.attendance[0]);
-          console.log("=== SAMPLE DATE FROM API ===", res.attendance[0]?.date);
-          console.log("=== DATE TYPE ===", typeof res.attendance[0]?.date);
-        }
-        
         const data = Array.isArray(res.attendance) ? res.attendance : [];
         setAttendanceData(data);
       } catch (err) {
@@ -79,60 +85,29 @@ export default function AttendanceMonthView() {
 
   const getFilteredMonthData = () => {
     const [year, month] = selectedMonth.split("-").map(Number);
-    
-    console.log("=== FIXED DATE MATCHING ===");
-    console.log("Selected month:", selectedMonth);
-    console.log("API attendance data:", attendanceData);
-    
     const daysInMonth = new Date(year, month, 0).getDate();
 
-    const allDates = Array.from({ length: daysInMonth }, (_, i) => {
+    return Array.from({ length: daysInMonth }, (_, i) => {
       const dayNumber = i + 1;
       const date = new Date(year, month - 1, dayNumber);
-      
-      // FIX: Use local date string to avoid timezone issues
       const localDateString = `${year}-${String(month).padStart(2, '0')}-${String(dayNumber).padStart(2, '0')}`;
-      
-      console.log(`Day ${dayNumber}: Generated date = ${localDateString}`);
-      
-      // FIX: Match directly with API's date field (not converted dates)
-      const match = attendanceData.find((d) => {
-        console.log(`  Comparing with API date: ${d.date}`);
-        const isMatch = d.date === localDateString;
-        if (isMatch) {
-          console.log(` MATCH FOUND! Day ${dayNumber} = ${d.date} (${d.status})`);
-        }
-        return isMatch;
-      });
 
-      const result = {
+      const match = attendanceData.find((d) => d.date === localDateString);
+
+      const day = date.toLocaleDateString("en-GB", { weekday: "long" });
+
+      return {
         date: date.toLocaleDateString("en-GB", {
           day: "2-digit",
           month: "short",
           year: "numeric",
         }),
-        day: date.toLocaleDateString("en-GB", { weekday: "long" }),
-        status: match?.status || "Absent",
+        day,
+        status: match?.status || (day === "Saturday" || day === "Sunday" ? "Weekend" : "Absent"),
         punchIn: match?.punchIn,
         punchOut: match?.punchOut,
-        // Debug info
-        debugDay: dayNumber,
-        debugGeneratedDate: localDateString,
-        debugApiDate: match?.date || "No match"
       };
-
-      if (match) {
-        console.log(`Final result for day ${dayNumber}:`, result);
-      }
-
-      return result;
     });
-
-    console.log("=== SUMMARY ===");
-    const presentDays = allDates.filter(d => d.status === "Present");
-    console.log("Days marked as Present:", presentDays.map(d => `${d.debugDay} (${d.debugApiDate})`));
-
-    return allDates;
   };
 
   const filteredData = getFilteredMonthData();
@@ -140,7 +115,9 @@ export default function AttendanceMonthView() {
   return (
     <div className="p-4">
       <div className="flex justify-between items-center">
-        <h3 className="text-lg font-semibold mb-4"><Link to="/attendance">Attendance</Link>/Attendance by Month</h3>
+        <h3 className="text-lg font-semibold mb-4">
+          <Link to="/attendance">Attendance</Link> / Attendance by Month
+        </h3>
         <div className="mb-4">
           <input
             type="month"

@@ -285,19 +285,18 @@ export const GetAttendance = async (userId) => {
   });
 };
 
-export const RequestMissPunchout = async () =>{
-   const token = localStorage.getItem("token");
+export const RequestMissPunchout = async (userId, payload) => {
+  const token = localStorage.getItem("token");
 
   if (!token) {
     throw new Error("User is not authenticated");
   }
 
-  return await api.get(`${Endpoints.RequestMissPunchout}/${Id}`,{
+  return await api.post(`${Endpoints.RequestMissPunchout}/${userId}`, payload, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
-}
-
+};
 
 

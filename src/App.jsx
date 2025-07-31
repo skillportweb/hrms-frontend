@@ -26,6 +26,7 @@ import UserLeaves from "./Components/User/UserLeaves";
 import SingleLeaveDetails from "./Components/User/SingleLeaveDetails";
 import MyAttendance from "./Components/User/MyAttendance";
 import AttendanceMonthlyTable from "./Components/Admin/AttendanceManagement/AttendanceMonthlyTable";
+import Holidays from "./Components/Admin/Holidays";
 
 
 function App() {
@@ -55,9 +56,10 @@ function App() {
             {/* User routes */}
             <Route path="/my-account" element={<UserAccount />} />
             <Route path="/my-leaves" element={<UserLeaves />} />
-             <Route path="/single-leave-details/:id" element={<SingleLeaveDetails />} />
-              <Route path="/my-attendance" element={<MyAttendance/>} />
-              <Route path="/attendance-monthly-table/:userId" element={<AttendanceMonthlyTable/>} />
+            <Route path="/single-leave-details/:id" element={<SingleLeaveDetails />} />
+            <Route path="/my-attendance" element={<MyAttendance />} />
+            <Route path="/attendance-monthly-table/:userId" element={<AttendanceMonthlyTable />} />
+            <Route path="/holidays" element={<Holidays />} />
 
           </Route>
         </Route>
