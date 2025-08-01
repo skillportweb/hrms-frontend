@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { FaCheck, FaTimes, FaSpinner } from "react-icons/fa";
 import { GetAttendance } from "../../../Apis/apiHandlers";
 
-const AttendanceCard = ({ date, day, status, punchIn, punchOut }) => {
+const AttendanceCard = ({ date, day, status, punchIn, punchOut, missPunchStatus ,id}) => {
   const isWeekend = day === "Saturday" || day === "Sunday";
   const isPresent = status === "Present";
 
@@ -43,6 +43,18 @@ const AttendanceCard = ({ date, day, status, punchIn, punchOut }) => {
             <p className="text-xs text-gray-700">
               <span className="font-medium">Punch Out:</span> {punchOut || "--"}
             </p>
+
+            {/* Conditional Button Display */}
+            {missPunchStatus == 1 && (
+              <div className="mt-3 flex justify-center gap-2">
+                <button className="px-3 py-1 w-full text-xs bg-green-600 text-white rounded hover:bg-green-700">
+                  Approve
+                </button>
+                <Link to={`/view/${id}`} className="px-3 py-1 w-full text-xs bg-blue-600 text-white rounded hover:bg-blue-700">
+                  View
+                </Link>
+              </div>
+            )}
           </>
         )}
       </div>
@@ -72,6 +84,7 @@ export default function AttendanceMonthView() {
       try {
         const res = await GetAttendance(parsedUserId);
         const data = Array.isArray(res.attendance) ? res.attendance : [];
+          console.log("Fetched setAttendanceData data:", data);
         setAttendanceData(data);
       } catch (err) {
         console.error("API Error:", err);
@@ -90,10 +103,9 @@ export default function AttendanceMonthView() {
     return Array.from({ length: daysInMonth }, (_, i) => {
       const dayNumber = i + 1;
       const date = new Date(year, month - 1, dayNumber);
-      const localDateString = `${year}-${String(month).padStart(2, '0')}-${String(dayNumber).padStart(2, '0')}`;
+      const localDateString = `${year}-${String(month).padStart(2, "0")}-${String(dayNumber).padStart(2, "0")}`;
 
       const match = attendanceData.find((d) => d.date === localDateString);
-
       const day = date.toLocaleDateString("en-GB", { weekday: "long" });
 
       return {
@@ -106,6 +118,8 @@ export default function AttendanceMonthView() {
         status: match?.status || (day === "Saturday" || day === "Sunday" ? "Weekend" : "Absent"),
         punchIn: match?.punchIn,
         punchOut: match?.punchOut,
+        missPunchStatus: match?.missPunchStatus ?? 0,
+          id: match?.id, 
       };
     });
   };
@@ -149,3 +163,4 @@ export default function AttendanceMonthView() {
     </div>
   );
 }
+

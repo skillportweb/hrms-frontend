@@ -299,4 +299,33 @@ export const RequestMissPunchout = async (userId, payload) => {
   });
 };
 
+export const ApproveMissPunchout = async () => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+
+  return await api.post(`${Endpoints.ApproveMissPunchout}/${requestId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+ 
+export const ViewMissPunchoutRequest = async (id) => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+
+  return await api.get(`${Endpoints.ViewMissPunchoutRequest}/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+
 

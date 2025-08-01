@@ -24,5 +24,7 @@ SingleApplyLeaveDetails: "/single-apply-leave-details",
 AddUserAttendance : "/add-user-attendance",
 AttendancePunchout : "/attendance-punchout",
 GetAttendance : "/get-attendance",
-RequestMissPunchout:"/request-miss-punchout"
+RequestMissPunchout:"/request-miss-punchout",
+ApproveMissPunchout:"/approve-miss-punchout",
+ViewMissPunchoutRequest: "view-miss-punchout-request",
 }
