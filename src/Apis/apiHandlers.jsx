@@ -313,6 +313,7 @@ export const ApproveMissPunchout = async () => {
   });
 };
  
+
 export const ViewMissPunchoutRequest = async (id) => {
   const token = localStorage.getItem("token");
 
@@ -321,6 +322,36 @@ export const ViewMissPunchoutRequest = async (id) => {
   }
 
   return await api.get(`${Endpoints.ViewMissPunchoutRequest}/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+
+export const Addholidays = async ( payload) => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+
+  return await api.post(Endpoints.Addholidays, payload, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+
+export const GetAllHoliday = async () => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+
+  return await api.get(Endpoints.GetAllHoliday, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

@@ -28,6 +28,7 @@ import MyAttendance from "./Components/User/MyAttendance";
 import AttendanceMonthlyTable from "./Components/Admin/AttendanceManagement/AttendanceMonthlyTable";
 import Holidays from "./Components/Admin/Holidays";
 import ViewMissPunchoutRequest from "./Components/Admin/AttendanceManagement/ViewMissPunchoutRequest";
+import AddJobsForm from "./Components/Admin/AddJobsForm";
 
 
 function App() {
@@ -62,6 +63,7 @@ function App() {
             <Route path="/attendance-monthly-table/:userId" element={<AttendanceMonthlyTable />} />
             <Route path="/holidays" element={<Holidays />} />
             <Route path="/view/:id" element={<ViewMissPunchoutRequest/>} />
+            <Route path="/recruitment/add-jobs-form" element={<AddJobsForm/>} />
           </Route>
         </Route>
 

@@ -1,30 +1,43 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { FaCheck, FaTimes, FaSpinner } from "react-icons/fa";
-import { GetAttendance } from "../../../Apis/apiHandlers";
+import { GetAttendance, GetAllHoliday } from "../../../Apis/apiHandlers";
 
-const AttendanceCard = ({ date, day, status, punchIn, punchOut, missPunchStatus ,id}) => {
+// -------------------- CARD COMPONENT --------------------
+const AttendanceCard = ({
+  date,
+  day,
+  status,
+  punchIn,
+  punchOut,
+  missPunchStatus,
+  id,
+  holidayTitle,
+}) => {
+  const isHoliday = status === "Holiday";
   const isWeekend = day === "Saturday" || day === "Sunday";
   const isPresent = status === "Present";
 
-  const cardStyle = isWeekend
+  const cardStyle = isHoliday
+    ? "bg-blue-100 border-blue-400"
+    : isWeekend
     ? "bg-yellow-100 border-yellow-400"
     : isPresent
-    ? "bg-green-50 border-green-400"
-    : "bg-red-50 border-red-400";
+    ? "bg-green-100 border-green-400"
+    : "bg-red-100 border-red-400";
 
-  const icon = isWeekend ? null : isPresent ? (
-    <FaCheck className="text-green-600" />
-  ) : (
-    <FaTimes className="text-red-500" />
-  );
+  const icon = isHoliday
+    ? null
+    : isWeekend
+    ? null
+    : isPresent
+    ? <FaCheck className="text-green-600" />
+    : <FaTimes className="text-red-500" />;
 
   return (
-    <div
-      className={`relative rounded-xl shadow-md border p-4 w-full max-w-xs mx-auto ${cardStyle}`}
-    >
-      {!isWeekend && (
-        <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full flex items-center justify-center shadow bg-white">
+    <div className={`relative rounded-xl border p-4 w-full max-w-xs mx-auto ${cardStyle}`}>
+      {!isWeekend && !isHoliday && (
+        <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full flex items-center justify-center bg-white border shadow">
           {icon}
         </div>
       )}
@@ -33,7 +46,13 @@ const AttendanceCard = ({ date, day, status, punchIn, punchOut, missPunchStatus 
         <p className="text-sm font-bold text-gray-800 mb-1">{date}</p>
         <p className="text-xs text-gray-600 mb-2">{day}</p>
 
-        {isWeekend ? (
+        {isHoliday ? (
+          <>
+             <p className="text-xs text-blue-500 mb-1">{holidayTitle}</p>
+            <p className="text-xs text-blue-700 font-semibold">Holiday</p>
+         
+          </>
+        ) : isWeekend ? (
           <p className="text-xs text-gray-700 font-medium mt-4">Weekend</p>
         ) : (
           <>
@@ -44,13 +63,15 @@ const AttendanceCard = ({ date, day, status, punchIn, punchOut, missPunchStatus 
               <span className="font-medium">Punch Out:</span> {punchOut || "--"}
             </p>
 
-            {/* Conditional Button Display */}
-            {missPunchStatus == 1 && (
+            {missPunchStatus === 1 && (
               <div className="mt-3 flex justify-center gap-2">
-                <button className="px-3 py-1 w-full text-xs bg-green-600 text-white rounded hover:bg-green-700">
+                <button className="px-3 py-1 w-full text-xs bg-green-600 text-white rounded">
                   Approve
                 </button>
-                <Link to={`/view/${id}`} className="px-3 py-1 w-full text-xs bg-blue-600 text-white rounded hover:bg-blue-700">
+                <Link
+                  to={`/view/${id}`}
+                  className="px-3 py-1 w-full text-xs bg-blue-600 text-white rounded"
+                >
                   View
                 </Link>
               </div>
@@ -62,10 +83,12 @@ const AttendanceCard = ({ date, day, status, punchIn, punchOut, missPunchStatus 
   );
 };
 
+// -------------------- PAGE COMPONENT --------------------
 export default function AttendanceMonthView() {
   const { userId } = useParams();
   const parsedUserId = parseInt(userId, 10);
   const [attendanceData, setAttendanceData] = useState([]);
+  const [holidayData, setHolidayData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [selectedMonth, setSelectedMonth] = useState(() => {
@@ -82,17 +105,27 @@ export default function AttendanceMonthView() {
       }
 
       try {
-        const res = await GetAttendance(parsedUserId);
-        const data = Array.isArray(res.attendance) ? res.attendance : [];
-          console.log("Fetched setAttendanceData data:", data);
-        setAttendanceData(data);
+        const [attendanceRes, holidayRes] = await Promise.all([
+          GetAttendance(parsedUserId),
+          GetAllHoliday()
+        ]);
+
+        const attendance = Array.isArray(attendanceRes.attendance) ? attendanceRes.attendance : [];
+        const holidays = Array.isArray(holidayRes.holidays) ? holidayRes.holidays : [];
+
+        console.log("Fetched Attendance Data:", attendance);
+        console.log("Fetched Holidays:", holidays.map(h => ({ date: h.date, title: h.title })));
+
+        setAttendanceData(attendance);
+        setHolidayData(holidays);
       } catch (err) {
         console.error("API Error:", err);
-        setError("Failed to fetch attendance.");
+        setError("Failed to fetch data.");
       } finally {
         setLoading(false);
       }
     };
+
     fetchData();
   }, [parsedUserId]);
 
@@ -102,24 +135,30 @@ export default function AttendanceMonthView() {
 
     return Array.from({ length: daysInMonth }, (_, i) => {
       const dayNumber = i + 1;
-      const date = new Date(year, month - 1, dayNumber);
-      const localDateString = `${year}-${String(month).padStart(2, "0")}-${String(dayNumber).padStart(2, "0")}`;
+      const dateObj = new Date(year, month - 1, dayNumber);
+      const isoDate = `${year}-${String(month).padStart(2, "0")}-${String(dayNumber).padStart(2, "0")}`;
+      const day = dateObj.toLocaleDateString("en-GB", { weekday: "long" });
 
-      const match = attendanceData.find((d) => d.date === localDateString);
-      const day = date.toLocaleDateString("en-GB", { weekday: "long" });
+      const attendance = attendanceData.find((d) => d.date === isoDate);
+      const holiday = holidayData.find((h) => h.date === isoDate);
+
+      const status = holiday
+        ? "Holiday"
+        : attendance?.status || (day === "Saturday" || day === "Sunday" ? "Weekend" : "Absent");
 
       return {
-        date: date.toLocaleDateString("en-GB", {
+        date: dateObj.toLocaleDateString("en-GB", {
           day: "2-digit",
           month: "short",
           year: "numeric",
         }),
         day,
-        status: match?.status || (day === "Saturday" || day === "Sunday" ? "Weekend" : "Absent"),
-        punchIn: match?.punchIn,
-        punchOut: match?.punchOut,
-        missPunchStatus: match?.missPunchStatus ?? 0,
-          id: match?.id, 
+        status,
+        punchIn: attendance?.punchIn,
+        punchOut: attendance?.punchOut,
+        missPunchStatus: attendance?.missPunchStatus ?? 0,
+        id: attendance?.id,
+        holidayTitle: holiday?.title || "",
       };
     });
   };
@@ -163,4 +202,3 @@ export default function AttendanceMonthView() {
     </div>
   );
 }
-
