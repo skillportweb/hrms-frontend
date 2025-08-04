@@ -33,6 +33,11 @@ ViewMissPunchoutRequest: "view-miss-punchout-request",
 Addholidays:"/add-holidays",
 GetAllHoliday:"/get-all-holiday",
 
-
+// Recruitment
+Addjob: "/add-job",
+GetAlljobs:"/get-all-jobs",
+GetJobDetails:"/getjobdetails",
+UpdateJob: "edit-jobs",
+GetActivejobs:"/get-active-jobs"
 
 }

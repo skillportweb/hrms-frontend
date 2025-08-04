@@ -2,6 +2,7 @@ import { Endpoints } from "./constant/apiEndPoints";
 import { api } from "./api";
 
 
+
 export const Register = async (payload) => {
   return await api.post(Endpoints.Register, payload);
 };
@@ -358,5 +359,78 @@ export const GetAllHoliday = async () => {
   });
 };
 
+// Recruitment
+
+export const Addjob = async ( payload) => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+
+  return await api.post(Endpoints.Addjob, payload, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const GetAlljobs = async () => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+
+  return await api.get(Endpoints.GetAlljobs, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+
+export const GetJobDetails = async (id) => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+
+  return await api.get(`${Endpoints.GetJobDetails}/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+
+export const UpdateJob = async (id, data) => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+
+  return await api.put(`${Endpoints.UpdateJob}/${id}`, data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const GetActivejobs = async () => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+
+  return await api.get(Endpoints.GetActivejobs, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
 
 

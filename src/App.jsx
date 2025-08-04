@@ -29,6 +29,9 @@ import AttendanceMonthlyTable from "./Components/Admin/AttendanceManagement/Atte
 import Holidays from "./Components/Admin/Holidays";
 import ViewMissPunchoutRequest from "./Components/Admin/AttendanceManagement/ViewMissPunchoutRequest";
 import AddJobsForm from "./Components/Admin/AddJobsForm";
+import JobDetails from "./Components/Admin/JobDetails";
+import UpdateJobForm from "./Components/Admin/UpdateJobForm";
+import JobReferral from "./Components/User/JobReferral";
 
 
 function App() {
@@ -62,8 +65,11 @@ function App() {
             <Route path="/my-attendance" element={<MyAttendance />} />
             <Route path="/attendance-monthly-table/:userId" element={<AttendanceMonthlyTable />} />
             <Route path="/holidays" element={<Holidays />} />
-            <Route path="/view/:id" element={<ViewMissPunchoutRequest/>} />
-            <Route path="/recruitment/add-jobs-form" element={<AddJobsForm/>} />
+            <Route path="/view/:id" element={<ViewMissPunchoutRequest />} />
+            <Route path="/recruitment/add-jobs-form" element={<AddJobsForm />} />
+            <Route path="/jobdetails/:id" element={<JobDetails />} />
+            <Route path="/update-job/:id" element={<UpdateJobForm />} />
+             <Route path="/job-referral" element={<JobReferral />} />
           </Route>
         </Route>
 

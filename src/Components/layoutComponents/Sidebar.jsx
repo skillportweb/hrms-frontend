@@ -21,7 +21,7 @@ export default function Sidebar({ closeSidebar }) {
     { to: '/employees', label: 'Employees', icon: 'fas fa-users' },
     { to: '/attendance', label: 'Attendance', icon: 'fas fa-calendar-check' },
     { to: '/leaves', label: 'Leaves', icon: 'fas fa-plane-departure' },
-      { to: '/holidays', label: 'Holidays', icon: 'fas fa-umbrella-beach' },
+    { to: '/holidays', label: 'Holidays', icon: 'fas fa-umbrella-beach' },
     { to: '/payroll', label: 'Payroll', icon: 'fas fa-money-check-alt' },
     { to: '/departments', label: 'Departments', icon: 'fas fa-building' },
     { to: '/recruitment', label: 'Recruitment', icon: 'fas fa-user-plus' },
@@ -33,10 +33,10 @@ export default function Sidebar({ closeSidebar }) {
   const userLinks = [
     { to: '/my-leaves', label: 'My Leaves', icon: 'fas fa-plane-departure' },
     { to: 'my-attendance', label: 'My Attendance', icon: 'fas fa-calendar-check' },
+    { to: '/job-referral', label: 'Job Referral', icon: 'fas fa-bullhorn' },
     { to: '/my-account', label: 'Account', icon: 'fas fa-user' },
     { to: '#', label: 'My Payslips', icon: 'fas fa-file-invoice-dollar' },
     { to: '#', label: 'My Tasks', icon: 'fas fa-tasks' },
-    { to: '#', label: 'Announcements', icon: 'fas fa-bullhorn' },
     { to: '#', label: 'Support', icon: 'fas fa-headset' },
     { to: '#', label: 'Settings', icon: 'fas fa-cogs' },
 
