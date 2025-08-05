@@ -38,6 +38,9 @@ Addjob: "/add-job",
 GetAlljobs:"/get-all-jobs",
 GetJobDetails:"/getjobdetails",
 UpdateJob: "edit-jobs",
-GetActivejobs:"/get-active-jobs"
+GetActivejobs:"/get-active-jobs",
+ActiveJob:"activejob",
+DeactivateJob:"deactivatejob"
+
 
 }

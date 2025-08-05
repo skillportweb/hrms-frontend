@@ -1,33 +1,46 @@
 import React, { useEffect, useState } from 'react';
 import { FaMapMarkerAlt, FaClock } from 'react-icons/fa';
-import { GetAlljobs } from '../../Apis/apiHandlers';
+import { GetAlljobs, ActiveJob, DeactivateJob } from '../../Apis/apiHandlers'; 
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify'; 
 
 export default function JobsCard() {
   const [jobs, setJobs] = useState([]);
-  const role = parseInt(localStorage.getItem('role'), 10); 
+  const role = parseInt(localStorage.getItem('role'), 10);
 
   useEffect(() => {
     const fetchJobs = async () => {
       try {
         const response = await GetAlljobs();
+        console.log("====================", response.data);
         setJobs(response.data);
       } catch (error) {
         console.error("Error fetching jobs:", error.message);
+        toast.error("Failed to fetch jobs");
       }
     };
 
     fetchJobs();
   }, []);
 
-  const toggleJobStatus = (jobId, currentStatus) => {
-    const updatedJobs = jobs.map(job =>
-      job.id === jobId ? { ...job, isActive: !currentStatus } : job
-    );
-    setJobs(updatedJobs);
+  const toggleJobStatus = async (jobId, currentStatus) => {
+    try {
+      if (currentStatus) {
+        await DeactivateJob(jobId);
+        toast.warn("Job Deactivated");
+      } else {
+        await ActiveJob(jobId);
+        toast.success("Job Activated");
+      }
 
-    // Optional: call API to update status on backend
-    // await UpdateJobStatus(jobId, !currentStatus);
+      const updatedJobs = jobs.map(job =>
+        job.id === jobId ? { ...job, status: !currentStatus } : job
+      );
+      setJobs(updatedJobs);
+    } catch (error) {
+      console.error("Error updating job status:", error.message);
+      toast.error("Failed to update job status");
+    }
   };
 
   return (
@@ -35,18 +48,18 @@ export default function JobsCard() {
       {jobs.map((job) => (
         <div key={job.id} className="relative bg-white shadow-md p-4 rounded-lg">
 
-          {/* Show toggle only for role === 1 (Admin) */}
+          {/* Toggle button for Admins */}
           {role === 1 && (
             <div className="absolute top-3 right-3">
               <label className="flex items-center cursor-pointer">
                 <input
                   type="checkbox"
-                  checked={job.isActive}
-                  onChange={() => toggleJobStatus(job.id, job.isActive)}
+                  checked={job.status}
+                  onChange={() => toggleJobStatus(job.id, job.status)}
                   className="sr-only"
                 />
-                <div className={`w-10 h-5 flex items-center rounded-full p-1 transition-colors duration-300 ${job.isActive ? 'bg-green-500' : 'bg-red-500'}`}>
-                  <div className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform duration-300 ${job.isActive ? 'translate-x-5' : ''}`} />
+                <div className={`w-10 h-5 flex items-center rounded-full p-1 transition-colors duration-300 ${job.status ? 'bg-green-500' : 'bg-red-500'}`}>
+                  <div className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform duration-300 ${job.status ? 'translate-x-5' : ''}`} />
                 </div>
               </label>
             </div>

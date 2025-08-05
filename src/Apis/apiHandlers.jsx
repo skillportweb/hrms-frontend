@@ -434,3 +434,44 @@ export const GetActivejobs = async () => {
 };
 
 
+export const ActiveJob = async (id) => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+
+  return await api.patch(
+    `${Endpoints.ActiveJob}/${id}`,
+    {}, 
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+};
+
+export const DeactivateJob = async (id) => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+
+  return await api.patch(
+    `${Endpoints.DeactivateJob}/${id}`,
+    {}, 
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+};
+
+
+
+
+
+

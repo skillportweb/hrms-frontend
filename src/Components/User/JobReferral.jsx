@@ -6,7 +6,7 @@ export default function JobReferral() {
   return (
     <>
       <div className="flex justify-between items-center mb-4 mt-4">
-        <h1 className="text-lg font-semibold">job Referral</h1>
+        <h1 className="text-lg font-semibold">Job Referral</h1>
         <input
           type="text"
           placeholder="Search jobs..."
