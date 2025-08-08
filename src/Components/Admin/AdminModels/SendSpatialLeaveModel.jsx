@@ -36,7 +36,7 @@ export default function SendSpatialLeaveModel({ isOpen, onClose }) {
             onClick={() => {
               onClose();
             }}
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            className="px-4 py-1  bg-[#2c3e50] text-white rounded hover:bg-[#43596f]"
           >
             Submit
           </button>

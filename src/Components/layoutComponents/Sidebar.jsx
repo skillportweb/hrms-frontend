@@ -34,7 +34,7 @@ export default function Sidebar({ closeSidebar }) {
     { to: '/my-leaves', label: 'My Leaves', icon: 'fas fa-plane-departure' },
     { to: 'my-attendance', label: 'My Attendance', icon: 'fas fa-calendar-check' },
     { to: '/job-referral', label: 'Job Referral', icon: 'fas fa-bullhorn' },
-    { to: '/my-account', label: 'Account', icon: 'fas fa-user' },
+    { to: '/userprofile', label: 'Account', icon: 'fas fa-user' },
     { to: '#', label: 'My Payslips', icon: 'fas fa-file-invoice-dollar' },
     { to: '#', label: 'My Tasks', icon: 'fas fa-tasks' },
     { to: '#', label: 'Support', icon: 'fas fa-headset' },
@@ -56,8 +56,8 @@ export default function Sidebar({ closeSidebar }) {
       aria-label="Main Sidebar Navigation"
     >
       <div className="flex justify-between items-center mb-6 pl-2">
-        <Link to="/dashboard" className="text-2xl font-bold text-white" id="sidebarLogo">
-          HRMS
+        <Link to="/dashboard" className="text-[17px] lg:text-2xl font-bold text-white" id="sidebarLogo">
+          SMART HR
         </Link>
         <button
           onClick={closeSidebar}

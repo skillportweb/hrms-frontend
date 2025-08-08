@@ -9,6 +9,7 @@ import { loginUser, clearError, logout } from "../../Redux/authSlice";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { isTokenExpired } from "../../utils/authUtils";
+import bgImage from "../../assets/img/bg.jpg"; 
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -67,6 +68,9 @@ export default function Login() {
 
       const res = await dispatch(loginUser(values)).unwrap();
 
+      if (res.token) {
+        localStorage.setItem("token", res.token);
+      }
       if (res.user?.role !== undefined) {
         localStorage.setItem("role", res.user.role);
       }
@@ -100,8 +104,13 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
+    <div
+      className="min-h-screen bg-cover bg-center flex items-center justify-center p-4"
+      style={{
+        backgroundImage: `url(${bgImage})`,
+      }}
+    >
+      <div className="bg-white bg-opacity-90 w-full max-w-md p-8 rounded-lg shadow-md">
         <h2 className="text-2xl font-semibold mb-6 text-center">Login</h2>
 
         <Formik
@@ -141,6 +150,14 @@ export default function Login() {
                   />
                   <FontAwesomeIcon
                     icon={showPassword ? faEyeSlash : faEye}
+                    role="button"
+                    aria-label={
+                      showPassword ? "Hide password" : "Show password"
+                    }
+                    tabIndex={0}
+                    onKeyPress={(e) => {
+                      if (e.key === "Enter") setShowPassword(!showPassword);
+                    }}
                     className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer"
                     onClick={() => setShowPassword(!showPassword)}
                   />
@@ -161,7 +178,33 @@ export default function Login() {
                     : "bg-[#2c3e50] text-white hover:bg-[#3a5269]"
                 }`}
               >
-                {loading || isSubmitting ? "Logging in..." : "Login"}
+                {loading || isSubmitting ? (
+                  <span className="flex items-center justify-center">
+                    <svg
+                      className="animate-spin h-5 w-5 mr-2 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8v8z"
+                      ></path>
+                    </svg>
+                    Logging in...
+                  </span>
+                ) : (
+                  "Login"
+                )}
               </button>
 
               <p className="text-sm text-center">

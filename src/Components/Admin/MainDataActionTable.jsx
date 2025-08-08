@@ -14,6 +14,14 @@ export default function MainDataActionTable() {
       setPending(true);
       setError(null);
       const response = await GetAllUsers();
+
+      // console.log("--------------", response?.users)
+
+      // response?.users?.forEach((user, index) => {
+      //   console.log(`User ${index + 1} departmentId:`, user?.departmentId);
+      // });
+
+
       const userData = response?.users;
 
       if (!Array.isArray(userData)) {
@@ -65,16 +73,19 @@ export default function MainDataActionTable() {
     { name: 'Phone', selector: row => row.phone },
     { name: 'DOB', selector: row => row.dob },
     { name: 'Designation', selector: row => row.designation },
+    { name: 'Department', selector: row => row.departmentId?.name || 'N/A' },
 
     {
       name: 'Is Blocked',
       cell: row => (
         <button
           onClick={() => handleBlockChange(row.id, row.firstname, row.isBlocked)}
-          className={`px-2 py-1 rounded text-white text-sm ${row.isBlocked ? 'bg-red-500' : 'bg-green-500'}`}
+          className={`w-24 px-2 py-1 rounded text-white text-sm text-center ${row.isBlocked ? 'bg-red-500' : 'bg-green-500'
+            }`}
         >
           {row.isBlocked ? 'Blocked' : 'Unblocked'}
         </button>
+
       ),
       sortable: true,
       width: '120px',

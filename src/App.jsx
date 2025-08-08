@@ -18,7 +18,6 @@ import Settings from "./Components/MainComponents/Settings";
 import Login from "./Components/MainComponents/Login";
 import SignUp from "./Components/MainComponents/SignUp";
 import UserProfile from "./Components/MainComponents/UserProfile";
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import NotFound from "./Components/MainComponents/NotFound";
 import UserAccount from "./Components/User/UserAccount";
@@ -32,6 +31,7 @@ import AddJobsForm from "./Components/Admin/AddJobsForm";
 import JobDetails from "./Components/Admin/JobDetails";
 import UpdateJobForm from "./Components/Admin/UpdateJobForm";
 import JobReferral from "./Components/User/JobReferral";
+import DepartmentDetails from "./Components/Admin/DepartmentDetails";
 
 
 function App() {
@@ -70,6 +70,7 @@ function App() {
             <Route path="/jobdetails/:id" element={<JobDetails />} />
             <Route path="/update-job/:id" element={<UpdateJobForm />} />
              <Route path="/job-referral" element={<JobReferral />} />
+              <Route path="/departments/department-details/:id" element={<DepartmentDetails />} />
           </Route>
         </Route>
 

@@ -23,7 +23,7 @@ export const Profile = async () => {
 
   console.log(" Full API response:", response);
   // Return only the user object
-  return response.user; 
+  return response.user;
 };
 
 export const UserLogout = async (payload) => {
@@ -148,7 +148,7 @@ export const GetUserLeaveBalance = async (userId) => {
 
 export const UpdateUserStatus = async (userId, status) => {
   console.log('UpdateUserStatus called with:', { userId, status });
-  
+
   if (!userId) {
     throw new Error("User ID is required");
   }
@@ -164,9 +164,9 @@ export const UpdateUserStatus = async (userId, status) => {
 
   // Map frontend status to backend expected values
   const statusMapping = {
-    'Approved': 'approved',     
-    'Blocked': 'blocked',      
-    'Unblocked': 'unblocked'    
+    'Approved': 'approved',
+    'Blocked': 'blocked',
+    'Unblocked': 'unblocked'
   };
 
   const backendStatus = statusMapping[status] || status;
@@ -174,7 +174,7 @@ export const UpdateUserStatus = async (userId, status) => {
 
   try {
     const response = await api.put(
-      `${Endpoints.UpdateUserStatus}/${userId}`, 
+      `${Endpoints.UpdateUserStatus}/${userId}`,
       {
         status: backendStatus,
       },
@@ -185,7 +185,7 @@ export const UpdateUserStatus = async (userId, status) => {
         },
       }
     );
-    
+
     console.log('API Response:', response.data);
     return response.data;
   } catch (error) {
@@ -193,7 +193,7 @@ export const UpdateUserStatus = async (userId, status) => {
     console.error('Error Response:', error.response?.data);
     console.error('Error Status:', error.response?.status);
     console.error('Error Headers:', error.response?.headers);
-    
+
     throw new Error(error.response?.data?.message || 'Failed to update user status');
   }
 };
@@ -215,7 +215,7 @@ export const ApplyUserLeave = async (userId, leaveData) => {
 export const GetApplyUserLeaves = async (userId) => {
   const token = localStorage.getItem("token");
 
-  console.log("API Call - User ID:", userId); 
+  console.log("API Call - User ID:", userId);
 
   if (!token) {
     throw new Error("User is not authenticated");
@@ -279,7 +279,7 @@ export const GetAttendance = async (userId) => {
     throw new Error("User is not authenticated");
   }
 
-  return await api.get(`${Endpoints.GetAttendance}/${userId}`,{
+  return await api.get(`${Endpoints.GetAttendance}/${userId}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -313,7 +313,7 @@ export const ApproveMissPunchout = async () => {
     },
   });
 };
- 
+
 
 export const ViewMissPunchoutRequest = async (id) => {
   const token = localStorage.getItem("token");
@@ -330,7 +330,7 @@ export const ViewMissPunchoutRequest = async (id) => {
 };
 
 
-export const Addholidays = async ( payload) => {
+export const Addholidays = async (payload) => {
   const token = localStorage.getItem("token");
 
   if (!token) {
@@ -361,7 +361,7 @@ export const GetAllHoliday = async () => {
 
 // Recruitment
 
-export const Addjob = async ( payload) => {
+export const Addjob = async (payload) => {
   const token = localStorage.getItem("token");
 
   if (!token) {
@@ -443,7 +443,7 @@ export const ActiveJob = async (id) => {
 
   return await api.patch(
     `${Endpoints.ActiveJob}/${id}`,
-    {}, 
+    {},
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -461,7 +461,7 @@ export const DeactivateJob = async (id) => {
 
   return await api.patch(
     `${Endpoints.DeactivateJob}/${id}`,
-    {}, 
+    {},
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -470,8 +470,139 @@ export const DeactivateJob = async (id) => {
   );
 };
 
+// Department
+
+export const AddDepartment = async (payload) => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+
+  return await api.post(Endpoints.AddDepartment, payload, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const GetAllDepartments = async () => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+
+  return await api.get(Endpoints.GetAllDepartments, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
 
 
+export const UpdateDepartment = async (id, data) => {
+  const token = localStorage.getItem("token");
 
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+
+  return await api.put(`${Endpoints.UpdateDepartment}/${id}`, data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+
+export const GetDepartmentById = async (id) => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+
+  const response = await api.get(`${Endpoints.GetDepartmentById}/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data; 
+};
+
+
+export const GetAllDepartmentstitle = async () => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+
+  return await api.get(Endpoints.GetAllDepartmentstitle, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const GetAllUsernamesWithId = async () => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+
+  return await api.get(Endpoints.GetAllUsernamesWithId, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+
+export const GetUsersByDepartmentId = async (id) => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+  console.log(token)
+  return await api.get(`${Endpoints.GetUsersByDepartmentId}/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+
+export const AddDepartmentMembers = async (payload) => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+
+  return await api.post(Endpoints.AddDepartmentMembers, payload, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const getUsersByDepartmentId = async (departmentId) => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+  console.log(token)
+  return await api.get(`${Endpoints.getUsersByDepartmentId}/${departmentId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
 
 

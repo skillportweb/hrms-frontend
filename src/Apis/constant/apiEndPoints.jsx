@@ -34,13 +34,24 @@ Addholidays:"/add-holidays",
 GetAllHoliday:"/get-all-holiday",
 
 // Recruitment
+
 Addjob: "/add-job",
 GetAlljobs:"/get-all-jobs",
 GetJobDetails:"/getjobdetails",
-UpdateJob: "edit-jobs",
+UpdateJob: "/edit-jobs",
 GetActivejobs:"/get-active-jobs",
-ActiveJob:"activejob",
-DeactivateJob:"deactivatejob"
+ActiveJob:"/activejob",
+DeactivateJob:"/deactivatejob",
 
+// Department
+AddDepartment: "/add-department",
+GetAllDepartments: "/get-all-departments",
+UpdateDepartment:"/update-department",
+GetDepartmentById :"/get-department-by-id",
+GetAllDepartmentstitle: "/get-all-departments-title",
+GetAllUsernamesWithId:"/get-all-usernames-with-id",
 
+GetUsersByDepartmentId: "/get-users-dy-department-id",
+AddDepartmentMembers:"/add-department-members",
+getUsersByDepartmentId:"get-users-by-departmentid",
 }

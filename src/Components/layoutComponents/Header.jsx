@@ -5,6 +5,7 @@ import { logout } from "../../Redux/authSlice";
 import { UserLogout } from "../../Apis/apiHandlers";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import bgImage from "../../assets/img/profile.jpg"; 
 
 export default function Header({ toggleSidebar }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -61,7 +62,7 @@ export default function Header({ toggleSidebar }) {
           <span className="text-white font-medium ">Welcome , {firstName}</span>
 
           <img
-            src="src/assets/img/profile.jpg"
+            src={bgImage}
             alt="User Profile"
             className="w-10 h-10 rounded-full object-cover cursor-pointer border-1 border-white"
             onClick={() => setDropdownOpen(!dropdownOpen)}
