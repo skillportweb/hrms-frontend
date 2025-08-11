@@ -561,7 +561,6 @@ export const GetAllUsernamesWithId = async () => {
   });
 };
 
-
 export const GetUsersByDepartmentId = async (id) => {
   const token = localStorage.getItem("token");
 
@@ -575,7 +574,6 @@ export const GetUsersByDepartmentId = async (id) => {
     },
   });
 };
-
 
 export const AddDepartmentMembers = async (payload) => {
   const token = localStorage.getItem("token");
@@ -604,5 +602,46 @@ export const getUsersByDepartmentId = async (departmentId) => {
     },
   });
 };
+
+export const UpdateDepartmentStatus = async (id, status) => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+
+  console.log("Token being sent:", token);
+
+  return await api.put(
+    `${Endpoints.UpdateDepartmentStatus}/${id}`,
+    { status }, // body
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+};
+
+export const ChangeDepartment = async (userId, departmentId) => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+
+  const payload = {
+    userId,
+    departmentId,
+  };
+
+  return await api.put(Endpoints.ChangeDepartment, payload, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
 
 

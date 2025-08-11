@@ -5,7 +5,7 @@ import {
   FaBuilding, FaTruck, FaHandshake, FaWrench, FaBoxOpen, FaDraftingCompass,
   FaShieldAlt, FaChalkboardTeacher, FaQuestionCircle
 } from 'react-icons/fa';
-import { GetAllDepartments } from '../../Apis/apiHandlers';
+import { GetAllDepartments, UpdateDepartmentStatus } from '../../Apis/apiHandlers';
 import { toast } from 'react-toastify';
 import EditDepartmentsModel from './AdminModels/EditDepartmentsModel';
 import { Link } from 'react-router-dom';
@@ -26,31 +26,30 @@ export default function DepartmentsCard() {
   };
   const closeModal = () => setIsModalOpen(false);
 
+  const fetchDepartments = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await GetAllDepartments();
+
+      let departmentsData = [];
+      if (Array.isArray(response?.data)) departmentsData = response.data;
+      else if (Array.isArray(response)) departmentsData = response;
+      else if (Array.isArray(response?.departments)) departmentsData = response.departments;
+      else if (Array.isArray(response?.result)) departmentsData = response.result;
+      else if (Array.isArray(response?.items)) departmentsData = response.items;
+
+      setDepartments(departmentsData);
+    } catch (error) {
+      console.error("Error fetching departments:", error);
+      toast.error("Failed to fetch departments");
+      setError("Failed to fetch departments");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchDepartments = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const response = await GetAllDepartments();
-
-        let departmentsData = [];
-
-        if (Array.isArray(response?.data)) departmentsData = response.data;
-        else if (Array.isArray(response)) departmentsData = response;
-        else if (Array.isArray(response?.departments)) departmentsData = response.departments;
-        else if (Array.isArray(response?.result)) departmentsData = response.result;
-        else if (Array.isArray(response?.items)) departmentsData = response.items;
-
-        setDepartments(departmentsData);
-      } catch (error) {
-        console.error("Error fetching departments:", error);
-        toast.error("Failed to fetch departments");
-        setError("Failed to fetch departments");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchDepartments();
   }, []);
 
@@ -84,14 +83,16 @@ export default function DepartmentsCard() {
     return { icon: FaQuestionCircle, color: 'text-gray-400', bg: 'bg-gray-100' };
   };
 
-  const handleToggleStatus = (deptId, currentStatus) => {
-    const newStatus = currentStatus === 1 ? 0 : 1;
-    toast.success(`Toggled to ${newStatus === 1 ? 'Active' : 'Inactive'}`);
-    setDepartments(prev =>
-      prev.map(d =>
-        d.id === deptId ? { ...d, status: newStatus } : d
-      )
-    );
+  const handleToggleStatus = async (deptId, currentStatus) => {
+    try {
+      const newStatus = currentStatus === 1 ? 0 : 1;
+      const res = await UpdateDepartmentStatus(deptId, newStatus);
+      toast.success(res?.data?.message || "Department status updated");
+      await fetchDepartments();
+    } catch (error) {
+      console.error("UpdateDepartmentStatus error:", error);
+      toast.error(error?.response?.data?.message || "Failed to update department status");
+    }
   };
 
   if (loading) {
@@ -139,12 +140,10 @@ export default function DepartmentsCard() {
                 key={dept.id}
                 className={`relative ${bg} rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300 overflow-hidden`}
               >
-                {/* Icon */}
                 <div className={`absolute top-3 left-3 text-6xl opacity-20 ${color}`}>
                   <Icon />
                 </div>
 
-                {/* Swatch Switch */}
                 <div className="absolute top-3 right-3 z-10">
                   <label className="flex items-center cursor-pointer">
                     <input
@@ -159,14 +158,12 @@ export default function DepartmentsCard() {
                   </label>
                 </div>
 
-                {/* Content */}
                 <div className="relative z-10 mt-2">
                   <h3 className="text-xl font-bold mb-1">{title}</h3>
                   <p className="text-gray-600 mb-2">{description}</p>
                   <p className="text-sm text-gray-700 mb-4 font-medium">
                     Head: <span className="font-semibold">{head}</span>
                   </p>
-
 
                   <div className="flex justify-between items-center gap-4 mt-4">
                     <Link
@@ -186,9 +183,6 @@ export default function DepartmentsCard() {
                       Edit
                     </button>
                   </div>
-
-
-
                 </div>
               </div>
             );

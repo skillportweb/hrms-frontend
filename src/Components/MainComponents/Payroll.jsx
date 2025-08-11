@@ -1,4 +1,5 @@
 import React from 'react'
+import PayrollDataTable from '../Admin/PayrollDataTable'
 
 export default function Payroll() {
   return (
@@ -13,6 +14,9 @@ export default function Payroll() {
         />
       </div>
       <hr />
+      <div className='mt-4'>
+        <PayrollDataTable/>
+      </div>
     </>
   )
 }

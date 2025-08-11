@@ -54,4 +54,6 @@ GetAllUsernamesWithId:"/get-all-usernames-with-id",
 GetUsersByDepartmentId: "/get-users-dy-department-id",
 AddDepartmentMembers:"/add-department-members",
 getUsersByDepartmentId:"get-users-by-departmentid",
+UpdateDepartmentStatus: "update-department-status",
+ChangeDepartment: "/change-department",
 }
