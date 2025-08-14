@@ -56,4 +56,8 @@ AddDepartmentMembers:"/add-department-members",
 getUsersByDepartmentId:"get-users-by-departmentid",
 UpdateDepartmentStatus: "update-department-status",
 ChangeDepartment: "/change-department",
+
+// promotion
+UserPromotion : "user-promotion",
+GetAllPromotions : "get-all-promotions",
 }

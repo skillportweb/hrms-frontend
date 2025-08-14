@@ -26,7 +26,7 @@ export default function Sidebar({ closeSidebar }) {
     { to: '/departments', label: 'Departments', icon: 'fas fa-building' },
     { to: '/recruitment', label: 'Recruitment', icon: 'fas fa-user-plus' },
     // { to: '/performance', label: 'Performance', icon: 'fas fa-chart-line' },
-    { to: '/settings', label: 'Settings', icon: 'fas fa-cogs' },
+    // { to: '/settings', label: 'Settings', icon: 'fas fa-cogs' },
   ];
 
 
@@ -38,7 +38,7 @@ export default function Sidebar({ closeSidebar }) {
     { to: '#', label: 'My Payslips', icon: 'fas fa-file-invoice-dollar' },
     { to: '#', label: 'My Tasks', icon: 'fas fa-tasks' },
     { to: '#', label: 'Support', icon: 'fas fa-headset' },
-    { to: '#', label: 'Settings', icon: 'fas fa-cogs' },
+    // { to: '#', label: 'Settings', icon: 'fas fa-cogs' },
 
   ];
 

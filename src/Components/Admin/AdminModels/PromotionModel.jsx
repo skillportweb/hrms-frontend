@@ -1,11 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { UserPromotion } from "../../../Apis/apiHandlers";
 
-export default function PromotionModel({ isOpen, onClose, firstName }) {
+export default function PromotionModel({ isOpen, onClose, firstName, currentPayroll, userId }) {
+  console.log("Current Payroll (prop):", currentPayroll);
+
   const [formData, setFormData] = useState({
     newDesignation: "",
     promotionDate: "",
     notes: "",
+    currentPayroll: "",
+    promotedPayroll: "",
   });
+
+  // Prefill currentPayroll from props
+  useEffect(() => {
+    if (currentPayroll !== undefined && currentPayroll !== null) {
+      setFormData((prev) => ({
+        ...prev,
+        currentPayroll: currentPayroll,
+      }));
+    }
+  }, [currentPayroll]);
 
   if (!isOpen) return null;
 
@@ -14,10 +31,18 @@ export default function PromotionModel({ isOpen, onClose, firstName }) {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Promotion Data Submitted:", formData);
-    onClose();
+
+    try {
+      await UserPromotion(userId, formData);
+      toast.success("Promotion applied successfully!");
+      onClose();
+    } catch (error) {
+      console.error("Error during promotion:", error);
+      toast.error(error.response?.data?.message || "Failed to apply promotion");
+    }
   };
 
   return (
@@ -36,9 +61,8 @@ export default function PromotionModel({ isOpen, onClose, firstName }) {
         </div>
 
         <form onSubmit={handleSubmit}>
-
+          {/* Row 1: New Designation + Promotion Date */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            {/* New Designation input col-6 */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 New Designation
@@ -54,7 +78,6 @@ export default function PromotionModel({ isOpen, onClose, firstName }) {
               />
             </div>
 
-            {/* Promotion Date input col-6 */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Promotion Date
@@ -70,7 +93,40 @@ export default function PromotionModel({ isOpen, onClose, firstName }) {
             </div>
           </div>
 
-          {/* Notes textarea col-12 */}
+          {/* Row 2: Current Payroll + Promoted Payroll */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Current Payroll
+              </label>
+              <input
+                type="number"
+                name="currentPayroll"
+                value={formData.currentPayroll}
+                onChange={handleChange}
+                placeholder="Enter current payroll amount"
+                required
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Promoted Payroll
+              </label>
+              <input
+                type="number"
+                name="promotedPayroll"
+                value={formData.promotedPayroll}
+                onChange={handleChange}
+                placeholder="Enter promoted payroll amount"
+                required
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200"
+              />
+            </div>
+          </div>
+
+          {/* Notes */}
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Notes / Comments (optional)

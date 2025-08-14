@@ -644,4 +644,36 @@ export const ChangeDepartment = async (userId, departmentId) => {
 };
 
 
+// promotion
 
+
+
+
+export const UserPromotion  = async (userId, payload) => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+
+  return await api.put(`${Endpoints.UserPromotion }/${userId}`, payload, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+
+export const GetAllPromotions= async (id) => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+  console.log(token)
+  return await api.get(`${Endpoints.GetAllPromotions}/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};

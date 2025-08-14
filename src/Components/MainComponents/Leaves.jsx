@@ -119,8 +119,8 @@ export default function Leaves() {
               <thead className="bg-[#2c3e50] text-white">
                 <tr>
                   <th className="px-6 py-3">ID</th>
-                  <th className="px-6 py-3">First Name</th>
-                  <th className="px-6 py-3">Last Name</th>
+                  <th className="px-6 py-3">FName</th>
+                  <th className="px-6 py-3">LName</th>
                   <th className="px-6 py-3">Designation</th>
                   <th className="px-6 py-3">Action</th>
                 </tr>

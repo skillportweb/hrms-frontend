@@ -32,6 +32,7 @@ import JobDetails from "./Components/Admin/JobDetails";
 import UpdateJobForm from "./Components/Admin/UpdateJobForm";
 import JobReferral from "./Components/User/JobReferral";
 import DepartmentDetails from "./Components/Admin/DepartmentDetails";
+import PayRolldetails from "./Components/Admin/PayRolldetails";
 
 
 function App() {
@@ -69,8 +70,9 @@ function App() {
             <Route path="/recruitment/add-jobs-form" element={<AddJobsForm />} />
             <Route path="/jobdetails/:id" element={<JobDetails />} />
             <Route path="/update-job/:id" element={<UpdateJobForm />} />
-             <Route path="/job-referral" element={<JobReferral />} />
-              <Route path="/departments/department-details/:id" element={<DepartmentDetails />} />
+            <Route path="/job-referral" element={<JobReferral />} />
+            <Route path="/departments/department-details/:id" element={<DepartmentDetails />} />
+             <Route path="/view-payroll/:id" element={<PayRolldetails />} />
           </Route>
         </Route>
 
