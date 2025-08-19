@@ -33,6 +33,14 @@ import UpdateJobForm from "./Components/Admin/UpdateJobForm";
 import JobReferral from "./Components/User/JobReferral";
 import DepartmentDetails from "./Components/Admin/DepartmentDetails";
 import PayRolldetails from "./Components/Admin/PayRolldetails";
+import Personalinfo from "./Components/Profile/Personalinfo";
+import ContactInfo from "./Components/Profile/ContactInfo";
+import Documents from "./Components/Profile/Documents";
+import JobDetailsInfo from "./Components/Profile/JobDetailsInfo";
+import BankDetails from "./Components/Profile/BankDetails";
+import EducationInfo from "./Components/Profile/EducationInfo";
+import SkillsInfo from "./Components/Profile/SkillsInfo";
+import Certificates from "./Components/Profile/Certificates";
 
 
 function App() {
@@ -73,6 +81,17 @@ function App() {
             <Route path="/job-referral" element={<JobReferral />} />
             <Route path="/departments/department-details/:id" element={<DepartmentDetails />} />
              <Route path="/view-payroll/:id" element={<PayRolldetails />} />
+
+             {/* Personal */}
+                <Route path="/userprofile/personalinfo" element={<Personalinfo />} />
+                 <Route path="/userprofile/contactInfo" element={<ContactInfo />} />
+                  <Route path="/userprofile/documents" element={<Documents />} />
+                   <Route path="/userprofile/job-details-info" element={<JobDetailsInfo/>} />
+                    <Route path="/userprofile/bank-details" element={<BankDetails/>} />
+                     <Route path="/userprofile/education-info" element={<EducationInfo/>} />
+                     <Route path="/userprofile/skills" element={<SkillsInfo/>} />
+                     <Route path="/userprofile/certificates" element={<Certificates/>} />
+
           </Route>
         </Route>
 

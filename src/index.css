@@ -24,3 +24,13 @@ body{
 .gzpBke svg{
   display: none !important;
 }
+
+.custom-pagination .swiper-pagination-bullet {
+  background:#34495e;
+  opacity: 0.4;
+  transition: opacity 0.3s ease;
+}
+
+.custom-pagination .swiper-pagination-bullet-active {
+  opacity: 1;
+}

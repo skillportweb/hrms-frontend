@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { GetJobDetails } from '../../Apis/apiHandlers';
+import ReferralJobModel from './AdminModels/ReferralJobModel';
 
 export default function JobDetails() {
   const { id } = useParams();
   const [jobData, setJobData] = useState(null);
   const [userRole, setUserRole] = useState(null);
+
+  // Modal state
+  const [isReferralOpen, setIsReferralOpen] = useState(false);
 
   useEffect(() => {
     const fetchJobDetails = async () => {
@@ -36,7 +40,10 @@ export default function JobDetails() {
 
         {/* Top right button: show Referral for role 0, else Edit */}
         {isRoleZero ? (
-          <button className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition">
+          <button
+            onClick={() => setIsReferralOpen(true)}
+            className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition"
+          >
             Referral Anyone
           </button>
         ) : (
@@ -88,7 +95,10 @@ export default function JobDetails() {
 
             {/* Sidebar button: Referral or Edit based on role */}
             {isRoleZero ? (
-              <button className="w-full text-center bg-green-600 px-6 py-2 rounded text-white hover:bg-green-700 transition">
+              <button
+                onClick={() => setIsReferralOpen(true)}
+                className="w-full text-center bg-green-600 px-6 py-2 rounded text-white hover:bg-green-700 transition"
+              >
                 Referral Anyone
               </button>
             ) : (
@@ -102,6 +112,13 @@ export default function JobDetails() {
           </div>
         </div>
       </div>
+
+      {/* Modal (open when button clicked) */}
+      <ReferralJobModel
+        isOpen={isReferralOpen}
+        onClose={() => setIsReferralOpen(false)}
+        jobId={jobData.id}
+      />
     </>
   );
 }
