@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { GetApprovedAndRejectedLeaverequests } from "../../Apis/apiHandlers"; 
+import { GetApprovedAndRejectedLeaverequests } from "../../Apis/apiHandlers";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -61,7 +61,7 @@ export default function ApprovedAndRejectedRequest() {
           value={searchTerm}
           onChange={(e) => {
             setSearchTerm(e.target.value);
-            setCurrentPage(1); 
+            setCurrentPage(1);
           }}
         />
       </div>
@@ -77,20 +77,18 @@ export default function ApprovedAndRejectedRequest() {
               paginatedLeaves.map((leave) => (
                 <div
                   key={leave.leaveId || leave.id || Math.random()}
-                  className={`border-l-4 p-4 rounded shadow ${
-                    leave.status === "approved"
+                  className={`border-l-4 p-4 rounded shadow ${leave.status === "approved"
                       ? "border-green-500 bg-green-50"
                       : "border-red-500 bg-red-50"
-                  }`}
+                    }`}
                 >
                   <div className="flex justify-between items-center mb-1">
                     <h3 className="text-md font-bold">{leave.name || "N/A"}</h3>
                     <span
-                      className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                        leave.status === "approved"
+                      className={`px-2 py-0.5 rounded-full text-xs font-medium ${leave.status === "approved"
                           ? "bg-green-200 text-green-800"
                           : "bg-red-200 text-red-800"
-                      }`}
+                        }`}
                     >
                       {leave.status?.toUpperCase() || "UNKNOWN"}
                     </span>
@@ -100,7 +98,14 @@ export default function ApprovedAndRejectedRequest() {
                     <p><strong>Type:</strong> {leave.leaveType || "N/A"}</p>
                     <p><strong>From:</strong> {leave.startDate || "N/A"}</p>
                     <p><strong>To:</strong> {leave.endDate || "N/A"}</p>
-                    <p><strong>Reason:</strong> {leave.message || "N/A"}</p>
+                    <p>
+                      <strong>Reason:</strong>{" "}
+                      {leave.message
+                        ? leave.message.split(" ").slice(0, 10).join(" ") +
+                        (leave.message.split(" ").length > 10 ? " ..." : "")
+                        : "N/A"}
+                    </p>
+
                   </div>
                 </div>
               ))

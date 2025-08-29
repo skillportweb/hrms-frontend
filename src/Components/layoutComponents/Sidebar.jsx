@@ -25,7 +25,7 @@ export default function Sidebar({ closeSidebar }) {
     { to: '/payroll', label: 'Payroll', icon: 'fas fa-money-check-alt' },
     { to: '/departments', label: 'Departments', icon: 'fas fa-building' },
     { to: '/recruitment', label: 'Recruitment', icon: 'fas fa-user-plus' },
-    // { to: '/performance', label: 'Performance', icon: 'fas fa-chart-line' },
+    { to: '/support-center', label: 'SupportCenter', icon: 'fas fa-chart-line' },
     // { to: '/settings', label: 'Settings', icon: 'fas fa-cogs' },
   ];
 
@@ -35,9 +35,9 @@ export default function Sidebar({ closeSidebar }) {
     { to: 'my-attendance', label: 'My Attendance', icon: 'fas fa-calendar-check' },
     { to: '/job-referral', label: 'Job Referral', icon: 'fas fa-bullhorn' },
     { to: '/userprofile', label: 'Account', icon: 'fas fa-user' },
-    { to: '#', label: 'My Payslips', icon: 'fas fa-file-invoice-dollar' },
-    { to: '#', label: 'My Tasks', icon: 'fas fa-tasks' },
-    { to: '#', label: 'Support', icon: 'fas fa-headset' },
+    { to: '/payslips', label: 'My Payslips', icon: 'fas fa-file-invoice-dollar' },
+    { to: '/tasks', label: 'My Tasks', icon: 'fas fa-tasks' },
+    { to: '/support', label: 'Support', icon: 'fas fa-headset' },
     // { to: '#', label: 'Settings', icon: 'fas fa-cogs' },
 
   ];

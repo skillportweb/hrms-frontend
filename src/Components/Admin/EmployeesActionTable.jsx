@@ -9,6 +9,7 @@ export default function EmployeesActionTable() {
     <>
       <div className="container mx-auto px-3 py-3">
         <div className="flex justify-between items-center mb-4">
+          
           <h1 className="text-lg font-semibold">Employee Management</h1>
           <button
             onClick={() => setIsModalOpen(true)}

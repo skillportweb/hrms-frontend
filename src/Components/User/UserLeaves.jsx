@@ -60,8 +60,8 @@ export default function UserLeaves() {
   return (
     <div className="min-h-screen">
       <div className="max-w-6xl mx-auto">
-        <div className="flex items-center justify-between mb-9 mt-5">
-          <h1 className="text-2xl font-semibold text-gray-800">My Leaves</h1>
+        <div className="flex items-center justify-between mb-5 mt-5">
+          <h1 className="text-[20px] font-semibold text-gray-800">My Leaves</h1>
           <button
             onClick={() => setShowModal(true)}
             className="bg-slate-700 hover:bg-slate-800 text-white text-sm font-medium px-4 py-2 rounded"
@@ -69,6 +69,7 @@ export default function UserLeaves() {
             Apply Leave
           </button>
         </div>
+        <hr className="mb-5"/>
 
         {/* Summary Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">

@@ -41,6 +41,10 @@ import BankDetails from "./Components/Profile/BankDetails";
 import EducationInfo from "./Components/Profile/EducationInfo";
 import SkillsInfo from "./Components/Profile/SkillsInfo";
 import Certificates from "./Components/Profile/Certificates";
+import Payslips from "./Components/User/Payslips";
+import MyTasks from "./Components/User/MyTasks";
+import Support from "./Components/User/Support";
+import SupportCenter from "./Components/Admin/SupportCenter";
 
 
 function App() {
@@ -67,6 +71,8 @@ function App() {
             <Route path="/performance" element={<Performance />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/userprofile" element={<UserProfile />} />
+            <Route path="/support-center" element={<SupportCenter/>} />
+
             {/* User routes */}
             <Route path="/my-account" element={<UserAccount />} />
             <Route path="/my-leaves" element={<UserLeaves />} />
@@ -80,17 +86,21 @@ function App() {
             <Route path="/update-job/:id" element={<UpdateJobForm />} />
             <Route path="/job-referral" element={<JobReferral />} />
             <Route path="/departments/department-details/:id" element={<DepartmentDetails />} />
-             <Route path="/view-payroll/:id" element={<PayRolldetails />} />
+            <Route path="/view-payroll/:id" element={<PayRolldetails />} />
+            <Route path="/payslips" element={<Payslips />} />
+            <Route path="/tasks" element={<MyTasks/>} />
+            <Route path="/support" element={<Support/>} />
 
-             {/* Personal */}
-                <Route path="/userprofile/personalinfo" element={<Personalinfo />} />
-                 <Route path="/userprofile/contactInfo" element={<ContactInfo />} />
-                  <Route path="/userprofile/documents" element={<Documents />} />
-                   <Route path="/userprofile/job-details-info" element={<JobDetailsInfo/>} />
-                    <Route path="/userprofile/bank-details" element={<BankDetails/>} />
-                     <Route path="/userprofile/education-info" element={<EducationInfo/>} />
-                     <Route path="/userprofile/skills" element={<SkillsInfo/>} />
-                     <Route path="/userprofile/certificates" element={<Certificates/>} />
+            {/* Personal */}
+            <Route path="/userprofile/personalinfo" element={<Personalinfo />} />
+            <Route path="/userprofile/contactInfo" element={<ContactInfo />} />
+            <Route path="/userprofile/documents" element={<Documents />} />
+            <Route path="/userprofile/job-details-info" element={<JobDetailsInfo />} />
+            <Route path="/userprofile/bank-details" element={<BankDetails />} />
+            <Route path="/userprofile/education-info" element={<EducationInfo />} />
+            <Route path="/userprofile/skills" element={<SkillsInfo />} />
+            <Route path="/userprofile/certificates" element={<Certificates />} />
+            
 
           </Route>
         </Route>
