@@ -44,7 +44,8 @@ import Certificates from "./Components/Profile/Certificates";
 import Payslips from "./Components/User/Payslips";
 import MyTasks from "./Components/User/MyTasks";
 import Support from "./Components/User/Support";
-import SupportCenter from "./Components/Admin/SupportCenter";
+import SupportCenter from "./Components/User/SupportCenter";
+import ResolvedRequestsDetails from "./Components/User/ResolvedRequestsDetails";
 
 
 function App() {
@@ -100,6 +101,8 @@ function App() {
             <Route path="/userprofile/education-info" element={<EducationInfo />} />
             <Route path="/userprofile/skills" element={<SkillsInfo />} />
             <Route path="/userprofile/certificates" element={<Certificates />} />
+
+             <Route path="resolved-requests-details/:id" element={<ResolvedRequestsDetails />} />
             
 
           </Route>

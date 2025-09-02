@@ -1,7 +1,12 @@
-import React, { useState } from "react";
-import { FaTimes, FaTicketAlt } from "react-icons/fa";
 
-export default function SupportRequestModel({ isOpen, onClose, departments = [] }) {
+
+import React, { useState, useEffect } from "react";
+import { FaTimes, FaTicketAlt } from "react-icons/fa";
+import { toast } from "react-toastify";
+import { GetAllDepartmentstitle } from "../../../Apis/apiHandlers";
+import { CreateSupportRequest } from "../../../Apis/apiHandlers"; 
+
+export default function SupportRequestModel({ isOpen, onClose }) {
   const [formData, setFormData] = useState({
     employeeName: "",
     department: "",
@@ -12,19 +17,98 @@ export default function SupportRequestModel({ isOpen, onClose, departments = [] 
     description: "",
   });
 
+  const [departments, setDepartments] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  // Fetch departments from API
+  const fetchDepartments = async () => {
+    try {
+      const response = await GetAllDepartmentstitle();
+      let departmentData = [];
+
+      if (Array.isArray(response)) {
+        departmentData = response.map((dept) => ({
+          id: dept.id, // use id in payload
+          title: dept.title,
+        }));
+      }
+
+      setDepartments(departmentData);
+
+      if (departmentData.length === 0) {
+        toast.warn("No departments available");
+      }
+    } catch (error) {
+      console.error("Error fetching departments:", error);
+      toast.error("Failed to load departments");
+      setDepartments([]);
+    }
+  };
+
+  // Fetch on modal open
+  useEffect(() => {
+    if (isOpen) {
+      fetchDepartments();
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Submitted:", formData);
-    onClose();
+
+    // Validate before sending
+    if (
+      !formData.employeeName ||
+      !formData.department ||
+      !formData.employeeEmail ||
+      !formData.title ||
+      !formData.category ||
+      !formData.description
+    ) {
+      toast.error("Please fill all required fields");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      // Add userId from localStorage
+      const userId = localStorage.getItem("userId");
+      if (!userId) {
+        toast.error("User ID not found. Please log in again.");
+        return;
+      }
+
+      const payload = {
+        ...formData,
+        userId: parseInt(userId, 10),
+      };
+
+      await CreateSupportRequest(payload);
+
+      toast.success("Support request submitted successfully!");
+      onClose();
+      setFormData({
+        employeeName: "",
+        department: "",
+        employeeEmail: "",
+        title: "",
+        priority: "",
+        category: "",
+        description: "",
+      });
+    } catch (error) {
+      console.error("Error submitting support request:", error);
+      toast.error("Failed to submit support request");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="fixed inset-0 bg-[rgba(0,0,0,0.5)] flex items-center justify-center p-4 z-50">
-      {/* Outer keeps radius */}
       <div className="bg-white rounded-xl max-w-3xl w-full shadow-lg flex flex-col">
-        {/* Scrollable inner */}
         <div className="p-6 overflow-y-auto max-h-[90vh]">
           {/* Header */}
           <div className="flex justify-between items-center mb-5">
@@ -42,7 +126,7 @@ export default function SupportRequestModel({ isOpen, onClose, departments = [] 
           <hr className="mb-5" />
 
           {/* Form */}
-          <div className="space-y-4">
+          <form className="space-y-4" onSubmit={handleFormSubmit}>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -74,14 +158,15 @@ export default function SupportRequestModel({ isOpen, onClose, departments = [] 
                 >
                   <option value="">Select Department</option>
                   {departments.map((dept) => (
-                    <option key={dept} value={dept}>
-                      {dept}
+                    <option key={dept.id} value={dept.id}>
+                      {dept.title}
                     </option>
                   ))}
                 </select>
               </div>
             </div>
 
+            {/* Email */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Company Email *
@@ -98,6 +183,7 @@ export default function SupportRequestModel({ isOpen, onClose, departments = [] 
               />
             </div>
 
+            {/* Title */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Issue Title *
@@ -114,6 +200,7 @@ export default function SupportRequestModel({ isOpen, onClose, departments = [] 
               />
             </div>
 
+            {/* Priority & Category */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -126,7 +213,7 @@ export default function SupportRequestModel({ isOpen, onClose, departments = [] 
                   }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#34495e]"
                 >
-                    <option value="">Select Priority Level</option>
+                  <option value="">Select Priority Level</option>
                   <option value="Low">Low - Not Urgent</option>
                   <option value="Medium">Medium - Normal</option>
                   <option value="High">High - Urgent</option>
@@ -144,7 +231,7 @@ export default function SupportRequestModel({ isOpen, onClose, departments = [] 
                   }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#34495e]"
                 >
-                    <option value="IT Support">Select Category</option>
+                  <option value="">Select Category</option>
                   <option value="IT Support">IT Support</option>
                   <option value="HR Support">HR Support</option>
                   <option value="Payroll">Payroll</option>
@@ -156,6 +243,7 @@ export default function SupportRequestModel({ isOpen, onClose, departments = [] 
               </div>
             </div>
 
+            {/* Description */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Description *
@@ -175,21 +263,24 @@ export default function SupportRequestModel({ isOpen, onClose, departments = [] 
             {/* Actions */}
             <div className="flex flex-col sm:flex-row gap-3 pt-4">
               <button
-                onClick={handleFormSubmit}
-                className="flex-1 bg-[#34495e] text-white py-3 px-4 rounded-lg hover:bg-[#2c3e50] transition-colors font-medium"
+                type="submit"
+                disabled={loading}
+                className="flex-1 bg-[#34495e] text-white py-3 px-4 rounded-lg hover:bg-[#2c3e50] transition-colors font-medium disabled:opacity-50"
               >
-                Submit Request
+                {loading ? "Submitting..." : "Submit Request"}
               </button>
               <button
+                type="button"
                 onClick={onClose}
                 className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
               >
                 Cancel
               </button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>
   );
 }
+

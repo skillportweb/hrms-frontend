@@ -677,3 +677,87 @@ export const GetAllPromotions= async (id) => {
     },
   });
 };
+
+// support
+
+export const CreateSupportRequest = async (payload) => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+
+  return await api.post(Endpoints.CreateSupportRequest, payload, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const GetSupportRequests= async () => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+  console.log(token)
+  return await api.get(Endpoints.GetSupportRequests, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const GetRequestDetails= async (id) => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+  console.log(token)
+  return await api.get(`${Endpoints.GetRequestDetails}/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+
+export const SupportPendingRequest= async (userId) => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+  console.log(token)
+  return await api.get(`${Endpoints.SupportPendingRequest}/${userId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const SupportSolvedRequest= async (userId) => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+  console.log(token)
+  return await api.get(`${Endpoints.SupportSolvedRequest}/${userId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+
+export const SupportRequestSolve = async (id, payload) => {
+  const token = localStorage.getItem("token");
+  if (!token) throw new Error("User is not authenticated");
+
+  return await api.put(`${Endpoints.SupportRequestSolve}/${id}`, payload, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
+

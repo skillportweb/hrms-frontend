@@ -58,6 +58,19 @@ UpdateDepartmentStatus: "update-department-status",
 ChangeDepartment: "/change-department",
 
 // promotion
-UserPromotion : "user-promotion",
-GetAllPromotions : "get-all-promotions",
+UserPromotion : "/user-promotion",
+GetAllPromotions : "/get-all-promotions",
+
+
+
+// support
+CreateSupportRequest : "/support-request",
+GetSupportRequests : "/get-support-requests",
+GetRequestDetails:"/get-request-details",
+SupportPendingRequest : "/support/pending",
+SupportSolvedRequest:"/support/solved",
+SupportRequestSolve : "/support/solve",
+
 }
+
+
