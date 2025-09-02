@@ -242,6 +242,20 @@ export const GetSingleApplyLeaveDetails = async (leaveId) => {
   });
 };
 
+export const GetLeaveRequestSummary = async () => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+
+  return await api.get(Endpoints.GetLeaveRequestSummary, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
 // attendance
 
 export const AddUserAttendance = async (payload) => {
@@ -751,7 +765,6 @@ export const SupportSolvedRequest= async (userId) => {
   });
 };
 
-
 export const SupportRequestSolve = async (id, payload) => {
   const token = localStorage.getItem("token");
   if (!token) throw new Error("User is not authenticated");
@@ -760,4 +773,85 @@ export const SupportRequestSolve = async (id, payload) => {
     headers: { Authorization: `Bearer ${token}` },
   });
 };
+
+// TaskTODO
+
+
+export const AddTask = async (payload) => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+
+  return await api.post("/add-task", payload, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+
+export const DeleteTask = async (id) => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+
+  return await api.delete(`${Endpoints.DeleteTask}/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const TaskComplete = async (id) => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+
+  return await api.put(
+    `${Endpoints.TaskComplete}/${id}`,
+    {}, 
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+};
+
+export const GetTasksPending = async (userId) => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+
+  return await api.get(`${Endpoints.GetTasksPending}/${userId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const GetTaskComplete = async (userId) => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+
+  return await api.get(`${Endpoints.GetTaskComplete}/${userId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+
+
 
